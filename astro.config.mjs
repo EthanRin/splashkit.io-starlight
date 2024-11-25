@@ -4,6 +4,7 @@ import solidJs from "@astrojs/solid-js";
 import react from "@astrojs/react";
 import starlightLinksValidator from 'starlight-links-validator';
 import sitemap from "@astrojs/sitemap";
+import starlightDocSearch from '@astrojs/starlight-docsearch';
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,6 +20,11 @@ export default defineConfig({
         starlightLinksValidator({
           errorOnRelativeLinks: true,
         }),
+        starlightDocSearch({
+          appId: 'ASRDFPVQQX',
+          apiKey: '3d8dea370842034065dc451af71180d4',
+          indexName: 'sksearchtest'
+        })
       ],
       expressiveCode: {
         // theme: ["github-dark", "github-light"],
