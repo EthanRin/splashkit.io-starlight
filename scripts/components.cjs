@@ -99,6 +99,36 @@ function getAllFinishedExamples() {
   return allExamples;
 }
 
+function getJsonData() {
+  var jsonFile;
+  var jsonData;
+  try {
+    jsonFile = fs.readFileSync(`${__dirname}/guides.json`);
+  } catch (err) {
+    console.error(kleur.red("Error reading JSON file:"), err);
+    return;
+  }
+  try {
+    jsonData = JSON.parse(jsonFile);
+  } catch (error) {
+    console.error(kleur.red("Error parsing JSON:"), error);
+    return;
+  }
+  return jsonData;
+}
+
+function getApiCategories(jsonData) {
+  const apiCategories = [];
+  for (const categoryKey in jsonData) {
+    if (categoryKey != "types") {
+      apiCategories.push(jsonData[categoryKey]);
+    }
+  }
+  return apiCategories;
+}
+
+const readGuides = require('./api-guides-generation.cjs');
+
 function Mappings(jsonData) {
   //generate mappings from API
   for (const categoryKey in jsonData) {
@@ -160,6 +190,15 @@ fs.readFile(`${__dirname}/api.json`, "utf8", async (err, data) => {
 
     const jsonColors = getColorData();
 
+    const guidesDir = path.join(__dirname, 'guides');
+    const outputFile = path.join(__dirname, 'guides.json')
+
+    const guidesContent = readGuides(guidesDir);
+    fs.writeFileSync(outputFile, JSON.stringify(guidesContent, null, 4));
+
+    let guidesJson = getJsonData();
+    let guidesCategories = getApiCategories(guidesJson);
+
     const usageExamples = getAllFinishedExamples();
 
 
@@ -192,7 +231,7 @@ fs.readFile(`${__dirname}/api.json`, "utf8", async (err, data) => {
           mdxContent += `:::\n`
         }
       }
-      mdxContent += `\nimport { Tabs, TabItem } from "@astrojs/starlight/components";\nimport { LinkCard, CardGrid } from "@astrojs/starlight/components";\nimport { LinkButton } from '@astrojs/starlight/components';\n`;
+      mdxContent += `\nimport { Tabs, TabItem } from "@astrojs/starlight/components";\nimport { LinkCard, CardGrid } from "@astrojs/starlight/components";\nimport { LinkButton } from '@astrojs/starlight/components';\nimport Accordion from '../../../components/Accordion.astro'\n`;
       if (guidesAvailable[categoryKey]) {
         mdxContent += "\n## \n";
         mdxContent += `## ${name} Guides\n`;
@@ -365,6 +404,34 @@ fs.readFile(`${__dirname}/api.json`, "utf8", async (err, data) => {
               linked = true;
             }
           });
+
+          let allGuides = [];
+          guidesCategories.forEach((category) => {
+            category.forEach((guide) => {
+              guide.functions.forEach((used) => {
+                if (func.unique_global_name == used){
+                  allGuides.push({
+                    name: guide.name,
+                    url: guide.url
+                  });
+                }
+              })
+            })
+          })
+
+
+          if (allGuides.length > 0){
+            mdxContent += "**Guides:**\n\n"
+            mdxContent += `<Accordion title="See Implemenations in Guides" uniqueID={${JSON.stringify(func.unique_global_name)}} customButton="guidesAccordion">\n\n`
+
+            mdxContent += `<ul>`
+              allGuides.forEach((guide) => {
+                mdxContent += `<li> [${guide.name}](${guide.url}) </li>`
+              })
+            mdxContent += `</ul>\n\n` 
+
+            mdxContent += `</Accordion>\n`
+          }
 
 
           mdxContent += "**Signatures:**\n\n";
