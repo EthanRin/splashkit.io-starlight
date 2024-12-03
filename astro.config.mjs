@@ -7,7 +7,8 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://ethanrin.github.io/',  // if hosted without domain.
+  site: 'https://ethanrin.github.io/',
+  base: '/splashkit.io-starlight',  // if hosted without domain.
   //   output: "server",
   //   adapter: netlify(),
   integrations: [
