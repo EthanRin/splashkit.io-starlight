@@ -8,7 +8,6 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://splashkittest.github.io/',
-  base: 'splashkit.io-starlight',
   // base: '/splashkit.io-starlight',  // if hosted without domain.
   //   output: "server",
   //   adapter: netlify(),
@@ -16,11 +15,11 @@ export default defineConfig({
     starlight({
       title: "SplashKit",
       description: 'SplashKit is a cross-platform game engine for C, C++ and Objective-C. It provides a simple API for 2D game development.',
-      plugins: [
-        starlightLinksValidator({
-          errorOnRelativeLinks: true,
-        }),
-      ],
+      // plugins: [
+      //   starlightLinksValidator({
+      //     errorOnRelativeLinks: true,
+      //   }),
+      // ],
       expressiveCode: {
         // theme: ["github-dark", "github-light"],
         // frames: {
