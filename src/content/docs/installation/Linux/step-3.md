@@ -6,7 +6,7 @@ sidebar:
 #     class: linux
 ---
 
-Once you have the [built splashkit](/installation/linux/step-3/) you
+Once you have the [built splashkit](/splashkit.io-starlight/installation/linux/step-3/) you
 can download and install Visual Studio Code to use as a source code editor.
 
 ## Steps

@@ -27,10 +27,10 @@ tools required to compile and develop applications.
     xcode-select --install
     ```
 
-    ![Gif showing Spotlight Search to open Terminal and pasting Xcode install command](/gifs/macos/terminal-xcode-install.gif)
+    ![Gif showing Spotlight Search to open Terminal and pasting Xcode install command](/splashkit.io-starlight/gifs/macos/terminal-xcode-install.gif)
 
     **Note:** After running the command above, if you get something like this:
 
-    ![A Terminal window showing message that 'Command Line Tools' are already installed](/images/installation/macos/xcode-install.png)
+    ![A Terminal window showing message that 'Command Line Tools' are already installed](/splashkit.io-starlight/images/installation/macos/xcode-install.png)
 
     That means you've already installed Xcode, and are ready to move to the next step!

@@ -12,7 +12,7 @@ To install SplashKit, you will firstly need to install some command line tools u
 
 1. Open up a terminal.
 
-    ![Opening a terminal in Linux](/gifs/linux/open-terminal.gif)
+    ![Opening a terminal in Linux](/splashkit.io-starlight/gifs/linux/open-terminal.gif)
 
 2. Install Command Line Tools: **curl** and **git**, which will be used in the SplashKit install process.
 

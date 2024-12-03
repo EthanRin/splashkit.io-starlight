@@ -18,7 +18,7 @@ sidebar:
 
     This is the code from the [SplashKit Homepage](http://splashkit.io).
 
-    ![Gif showing skm installing in Terminal](/gifs/macos/skm-install.gif)
+    ![Gif showing skm installing in Terminal](/splashkit.io-starlight/gifs/macos/skm-install.gif)
 
 2. Restart the terminal and execute `skm` to test it was successfully installed.
 
@@ -48,4 +48,4 @@ sidebar:
     skm global install
     ```
 
-    ![Gif showing skm installing globally in Terminal](/gifs/macos/skm-global-install.gif)
+    ![Gif showing skm installing globally in Terminal](/splashkit.io-starlight/gifs/macos/skm-global-install.gif)

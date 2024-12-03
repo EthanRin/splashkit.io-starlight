@@ -14,7 +14,7 @@ Visual Studio Code, also commonly known as *VS Code* or just *Code*, is a powerf
 
 2. Install Visual Studio Code.
 
-    ![Gif showing Visual Studio installation in Finder](/gifs/macos/vs-code-install.gif)
+    ![Gif showing Visual Studio installation in Finder](/splashkit.io-starlight/gifs/macos/vs-code-install.gif)
 
 3. In Visual Studio Code you should install the following extensions:
 
