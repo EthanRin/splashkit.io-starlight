@@ -1,9 +1,9 @@
 name: Deploy PR Previews
 on:
   push:
-    branches: [ github-deploy ]
-    pull_request:
-      types:
+    branches: [ git-preview ]
+  pull_request:
+    types:
         - opened
         - reopened
         - synchronize
@@ -20,4 +20,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           source-dir: .
           action: auto
-          preview-branch: github-deploy
+          preview-branch: git-preview
