@@ -1,0 +1,88 @@
+---
+title: SplashKit
+description: Get started building your docs site with Starlight.
+sidebar:
+  hidden: true
+
+template: splash
+
+hero:
+  tagline: SplashKit is a beginner's all-purpose software toolkit. This is very awesome!
+  image:
+    file: ../../assets/box.webp
+  actions:
+    - text: Documentation
+      link: /splashkit.io-starlight/api/
+      icon: document
+      variant: primary
+    - text: Article & Guides
+      link: /splashkit.io-starlight/guides/
+      icon: open-book
+      variant: minimal
+    - text: Usage Examples
+      link: /splashkit.io-starlight/usage-examples/
+      icon: rocket
+      variant: secondary
+---
+
+
+import { LinkCard, CardGrid } from "@astrojs/starlight/components";
+
+import Card from "../../components/Card.astro";
+
+import { ScriptComp } from "../../assets/ScriptComp";
+
+#### To install SplashKit, copy and paste the following into your terminal
+
+```shell
+bash <(curl -s https://raw.githubusercontent.com/splashkit/skm/master/install-scripts/skm-install.sh)
+```
+
+<center>See the [Installation Guides](/splashkit.io-starlight/installation/) for more details.</center>
+
+## Features
+
+<CardGrid>
+  <Card title="Easy Integration" icon="carbon:ibm-cloud-pak-integration">
+    SplashKit SDK offers seamless integration with your existing development
+    environment, making it easy to incorporate powerful graphics and game
+    development capabilities into your projects.
+  </Card>
+  <Card title="Cross-Platform Support:" icon="system-uicons:airplay">
+    Develop games and applications that run on multiple platforms, including
+    Windows, macOS, Linux, and a few more using a single codebase with SplashKit
+    SDK. Supports **C++, C# and python** .
+  </Card>
+  <Card title="Rich Graphics and Animation" icon="clarity:animation-solid">
+    Create stunning visuals and captivating animations with SplashKit's
+    comprehensive set of graphics and animation tools. Bring your ideas to life
+    with ease.
+  </Card>
+  <Card title="Game Development Made Simple" icon="icon-park-outline:game-two">
+    Whether you're a beginner or an experienced game developer, SplashKit SDK
+    provides a user-friendly interface and a wide range of features to simplify
+    the game development process.
+  </Card>
+  <Card title="Extensive Documentation" icon="iconoir:google-docs">
+    Access detailed documentation and tutorials to help you get started quickly
+    and make the most out of SplashKit SDK. Learn at your own pace and explore
+    the vast possibilities.
+  </Card>
+  <Card title="Continuous Updates and Support" icon="grommet-icons:troubleshoot">
+    <LinkCard
+    title="Troubleshooting"
+    icon="pencil"
+    description="FAQs on MacOS and Windows"
+    href="/troubleshoot/"
+    />
+  </Card>
+</CardGrid>
+
+<ScriptComp client:only />
+<footer>
+<center>
+
+  SplashKit is an open source project maintained by the [core team](https://github.com/orgs/splashkit/people) with the help of
+  all [our contributors](https://github.com/orgs/splashkit/people). Except as otherwise noted, SplashKit is licensed under [GPL](https://www.gnu.org/licenses/gpl-3.0.en.html#content).
+</center>
+</footer>
