@@ -1,0 +1,48 @@
+---
+title: Installation Guides
+sidebar:
+  hidden: true
+---
+
+import { LinkCard, CardGrid } from "@astrojs/starlight/components";
+
+import Card from "../../../components/Card.astro";
+
+import { ScriptComp } from '../../../assets/ScriptComp'
+
+<CardGrid>
+  <Card title="Windows" icon="raphael:windows">
+    {/* TODO: Add short text about Windows here */}
+    <LinkCard
+      title="Installation Guide (MSYS2)"
+      href="/splashkit.io-starlight/installation/windows-msys2/"
+    />
+    <LinkCard
+      title="Installation Guide (WSL)"
+      href="/splashkit.io-starlight/installation/windows-wsl/"
+    />
+  </Card>
+  <Card title="MacOS" icon="ic:baseline-apple">
+    {/* TODO: Add short text about MacOS here */}
+    <LinkCard
+      title="Installation Guide"
+      href="/splashkit.io-starlight/installation/macos/"
+    />
+  </Card>
+  <Card title="Linux" icon="logos:linux-tux">
+    {/* TODO: Add short text about Linux here */}
+    <LinkCard
+      title="Installation Guide"
+      href="/splashkit.io-starlight/installation/linux/"
+    />
+  </Card>
+  <Card title="Virtual Machine" icon="carbon:virtual-machine">
+    {/* TODO: Add short text about VMs here */}
+    <LinkCard
+      title="Installation Guide"
+      href="/splashkit.io-starlight/installation/virtual-machine/"
+    />
+  </Card>
+</CardGrid>
+
+<ScriptComp client:only />
