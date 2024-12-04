@@ -1,31 +1,21 @@
-
-name: Deploy PR previews
-
+name: Deploy PR Previews
 on:
-  pull_request:
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - closed
-
-concurrency: preview-${{ github.ref }}
-
-jobs:
-  deploy-preview:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install and Build
-        if: github.event.action != 'closed'
-        run: |
-          npm install
-          npm run build
-
-      - name: Deploy preview
-        uses: rossjrw/pr-preview-action@v1
-        with:
-          source-dir: .
-          action: auto
+  push:
+    branches: [ github-deploy ]
+    pull_request:
+      types:
+        - opened
+        - reopened
+        - synchronize
+  jobs: 
+    deploy-preview:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - name: Deploy PR Preview 
+          uses: rossjrw/pr-preview-action@v1.4.3
+          with: 
+            token: ${{ secrets.GITHUB_TOKEN }}
+            source-dir: .
+            action: auto
+            preview-branch: github-deploy
