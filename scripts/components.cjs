@@ -399,8 +399,8 @@ fs.readFile(`${__dirname}/api.json`, "utf8", async (err, data) => {
           usageExamples.forEach((example) => {
             if (func.unique_global_name == example && !linked) {
               formattedUsageLink = func.unique_global_name.replace(/_/g, "-");
-              mdxContent += `**Usage:**\n`
-              mdxContent += `<LinkButton href="/usage-examples/${categoryKey}/#${formattedUsageLink}" variant="secondary">\nSee Example Code\n</LinkButton>\n\n`
+              mdxContent += `**Use Cases:**\n`
+              mdxContent += `<LinkButton href="/usage-examples/${categoryKey}/#${formattedUsageLink}" variant="secondary">\nSee Example Code\n</LinkButton>\n`
               linked = true;
             }
           });
@@ -421,7 +421,6 @@ fs.readFile(`${__dirname}/api.json`, "utf8", async (err, data) => {
 
 
           if (allGuides.length > 0){
-            mdxContent += "**Guides:**\n\n"
             mdxContent += `<Accordion title="See Implemenations in Guides" uniqueID={${JSON.stringify(func.unique_global_name)}} customButton="guidesAccordion">\n\n`
 
             mdxContent += `<ul>`
