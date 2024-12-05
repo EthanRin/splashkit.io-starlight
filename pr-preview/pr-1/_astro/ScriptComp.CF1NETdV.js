@@ -1,0 +1,1 @@
+const s=()=>{const r=e=>{const{currentTarget:t}=e;if(!t)return;const o=t.getBoundingClientRect(),n=e.clientX-o.left,c=e.clientY-o.top;t.style.setProperty("--mouse-x",`${n}px`),t.style.setProperty("--mouse-y",`${c}px`)};for(const e of document.querySelectorAll(".card"))e.onmousemove=t=>r(t);return[]};export{s as ScriptComp};
