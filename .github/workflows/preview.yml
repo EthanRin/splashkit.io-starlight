@@ -31,9 +31,8 @@ jobs:
 
       - name: Build Astro Site
         run: npm run build
-
       - name: Deploy PR Preview 
-        uses: withastro/action@v3
+        uses: withastro/action@v3s
         with: 
           token: ${{ secrets.GITHUB_TOKEN }}
           deploy: true
