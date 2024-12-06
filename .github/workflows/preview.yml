@@ -52,5 +52,5 @@ jobs:
           git checkout --orphan gh-pages
           git add .
           git commit -m "Deploy PR Preview for PR #${{ github.event.pull_request.number }}"
-          git remote add origin https://github.com/${{ github.repository }}.git
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push --force origin gh-pages:gh-pages-preview/${{ github.event.pull_request.number }}
