@@ -32,4 +32,4 @@ jobs:
         with: 
           token: ${{ secrets.GITHUB_TOKEN }}
           deploy: true
-         branch: gh-pages/${{ github.event.pull_request.number }}
+          branch: gh-pages/${{ github.event.pull_request.number }}
