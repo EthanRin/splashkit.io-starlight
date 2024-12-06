@@ -13,6 +13,10 @@ concurrency: preview-${{ github.ref }}
 jobs: 
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Set up Node.js 20
         uses: actions/setup-node@v4
@@ -27,10 +31,10 @@ jobs:
 
       - name: Build Astro Site
         run: npm run build
+
       - name: Deploy PR Preview 
-        uses: rossjrw/pr-preview-action@v1.4.3
+        uses: withastro/action@v3
         with: 
           token: ${{ secrets.GITHUB_TOKEN }}
-          source-dir: dist
-          action: auto
-          preview-branch: gh-pages
+          deploy: true
+         branch: gh-pages/${{ github.event.pull_request.number }}
