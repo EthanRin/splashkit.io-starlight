@@ -47,8 +47,8 @@ jobs:
       - name: Checkout Site Built
         uses: actions/checkout@v4
         with:
-          path: gh-preview
-          ref: gh-preview
+          path: gh-pages
+          ref: gh-pages
 
       - name: Copy Build to Unique PR Folder
         run: |
