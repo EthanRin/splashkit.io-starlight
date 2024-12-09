@@ -20,6 +20,11 @@ export default defineConfig({
         starlightLinksValidator({
           errorOnRelativeLinks: true,
         }),
+        starlightDocSearch({
+          appId: 'ASRDFPVQQX',
+          apiKey: '3d8dea370842034065dc451af71180d4',
+          indexName: 'sksearchtest'
+        })
       ],
       expressiveCode: {
         // theme: ["github-dark", "github-light"],
