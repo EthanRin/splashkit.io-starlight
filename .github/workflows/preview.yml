@@ -9,6 +9,11 @@ on:
         - synchronize
 
 concurrency: preview-${{ github.ref }}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
   
 jobs: 
   build:
