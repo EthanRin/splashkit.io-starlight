@@ -1,0 +1,72 @@
+name: Deploy PR Previews
+on:
+  push:
+    branches: [ gh-pages ]
+  pull_request:
+    types:
+        - opened
+        - reopened
+        - synchronize
+
+concurrency: preview-${{ github.ref }}
+  
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Astro Site
+        run: npm run build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with: 
+          name: preview-${{ github.sha }}
+          path: dist
+
+  deploy:
+    needs: build
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: preview-${{ github.sha }}
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
+
+      - name: Leave PR Comment for Preview
+        if: ${{ success() && github.event_name == 'pull_request_target' && github.event.action != 'closed' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-preview
+          message: |
+            | 🌟 **Astro Starlight Preview** |
+            | :--------------------------: |
+            | [Preview Link](https://${{ github.repository_owner }}.github.io/astro-starlight/pr-${{ github.event.number }}) |
+            | Built for commit: `${{ github.event.pull_request.head.sha }}` |
+
+      - name: Cleanup PR Preview
+        if: ${{ github.event_name == 'pull_request_target' && github.event.action == 'closed' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-preview
+          message: |
+            | 🌟 **Astro Starlight Preview** |
+            | :--------------------------: |
+            | **Preview link removed!** Congrats if merged! 😊 |
