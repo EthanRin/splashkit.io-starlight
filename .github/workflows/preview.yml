@@ -45,6 +45,19 @@ jobs:
         with:
           name: preview-${{ github.sha }}
           path: dist
+      
+      - name: Delete existing page artifact 
+        uses: geekyeggo/delete-artifact@v5
+        with:
+            name: github-pages
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload IDE site
+          path: './deployed'
 
       - name: Deploy to GitHub Pages
         id: deployment
