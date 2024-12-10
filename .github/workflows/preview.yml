@@ -45,18 +45,10 @@ jobs:
         with:
           name: preview-${{ github.sha }}
           path: dist
-      
-      - name: Delete existing page artifact 
-        uses: geekyeggo/delete-artifact@v5
-        with:
-            name: github-pages
-      
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3
 
       - name: Leave PR Comment for Preview
         if: ${{ success() && github.event_name == 'pull_request_target' && github.event.action != 'closed' }}
