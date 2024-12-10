@@ -1,0 +1,92 @@
+name: Deploy Astro Starlight
+
+on:
+  # Trigger on pushes to the main branch
+  push:
+    branches: [ github-deploy ]
+
+  # Trigger on pull request events
+  pull_request_target:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+  # Manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: preview-${{ github.ref }}
+
+jobs:
+  # Build Astro site
+  build:
+    if: ${{ github.event_name != 'pull_request_target' || github.event.action != 'closed' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Astro Site
+        run: npm run build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: astro-build-${{ github.sha }}
+          path: ./dist
+          retention-days: 1
+
+  # Deploy Astro site
+  deploy:
+    needs: build
+    if: ${{ always() && !failure() && !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: astro-build-${{ github.sha }}
+          path: ./astro-dist
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          # Provide the path to the built Astro site
+          path: ./astro-dist
+
+      - name: Leave PR Comment for Preview
+        if: ${{ success() && github.event_name == 'pull_request_target' && github.event.action != 'closed' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-preview
+          message: |
+            | 🌟 **Astro Starlight Preview** |
+            | :--------------------------: |
+            | [Preview Link](https://${{ github.repository_owner }}.github.io/astro-starlight/pr-${{ github.event.number }}) |
+            | Built for commit: `${{ github.event.pull_request.head.sha }}` |
+
+      - name: Cleanup PR Preview
+        if: ${{ github.event_name == 'pull_request_target' && github.event.action == 'closed' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-preview
+          message: |
+            | 🌟 **Astro Starlight Preview** |
+            | :--------------------------: |
+            | **Preview link removed!** Congrats if merged! 😊 |
