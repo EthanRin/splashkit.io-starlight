@@ -1,18 +1,19 @@
-name: Deploy current 'deployed'/PR previews
+name: Deploy Astro Starlight
 
 on:
-  # Runs on pushes targeting the default branch
+  # Trigger on pushes to the main branch
   push:
-    branches: ["deployed", "github-deploy"]
+    branches: [ github-deploy ]
 
-  pull_request_target: # use trusted workflow (as opposed to `pull_request`)
+  # Trigger on pull request events
+  pull_request_target:
     types:
       - opened
       - reopened
       - synchronize
       - closed
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Manual trigger
   workflow_dispatch:
 
 permissions:
@@ -21,59 +22,46 @@ permissions:
   id-token: write
   pull-requests: write
 
-# Allow only one concurrent deployment per PR, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: preview-${{ github.ref }}
-  # cancel-in-progress: false
 
 jobs:
-  # Creates a build of the website and uploads it as an artifact
-  # May be running untrusted code, so it's been given very restricted permissions
-  # Hopefully it can't do anything too bad...
+  # Build Astro site
   build:
+    if: ${{ github.event_name != 'pull_request_target' || github.event.action != 'closed' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Use Node.js 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-        env:
-          GITHUB_TOKEN: ''
-
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: npm install
-        run: |
-          npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      - name: Build SplashKit site
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Astro Site
         run: npm run build
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4
         with:
-          name: preview-${{ github.sha }}
+          name: astro-build-${{ github.sha }}
           path: ./dist
+          retention-days: 1
 
-  # This part takes that artifact, merges it in to `site-builds` in its respective folder,
-  # and deploys.
+  # Deploy Astro site
   deploy:
     needs: build
-    if: ${{ always() && !failure() && !cancelled() }} # run this job even if the previous one is skipped
-    # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-      pull-requests: write
+    if: ${{ always() && !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Download built site
-        uses: actions/download-artifact@v4.1.8
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
         with:
-          name: preview-${{ github.sha }}
+          name: astro-build-${{ github.sha }}
           path: ./astro-dist
 
       - name: Deploy to GitHub Pages
@@ -82,16 +70,16 @@ jobs:
           # Provide the path to the built Astro site
           path: ./astro-dist
 
-      - name: Leave a link to the PR
+      - name: Leave PR Comment for Preview
         if: ${{ success() && github.event_name == 'pull_request_target' && github.event.action != 'closed' }}
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: pr-preview
           message: |
-            | 🌟 **PR Preview!** |
-            | :-----: |
+            | 🌟 **Astro Starlight Preview** |
+            | :--------------------------: |
             | [Preview Link](https://${{ github.repository_owner }}.github.io/astro-starlight/pr-${{ github.event.number }}) |
-            | for commit ${{ github.event.pull_request.head.sha }} |
+            | Built for commit: `${{ github.event.pull_request.head.sha }}` |
 
       - name: Cleanup PR Preview
         if: ${{ github.event_name == 'pull_request_target' && github.event.action == 'closed' }}
@@ -99,7 +87,6 @@ jobs:
         with:
           header: pr-preview
           message: |
-            | :whale2: **PR Preview!** |
-            | :-----: |
-            | The preview is no more! |
-            | Congrats if this was merged! :smile: |
+            | 🌟 **Astro Starlight Preview** |
+            | :--------------------------: |
+            | **Preview link removed!** Congrats if merged! 😊 |
