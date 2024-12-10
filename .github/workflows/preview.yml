@@ -15,7 +15,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
 
 # Allow only one concurrent deployment per PR, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -28,9 +32,6 @@ jobs:
   # May be running untrusted code, so it's been given very restricted permissions
   # Hopefully it can't do anything too bad...
   build:
-    if: ${{ github.event_name != 'pull_request_target' || github.event.action != 'closed' }}
-    permissions:
-      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Use Node.js 20
@@ -46,8 +47,6 @@ jobs:
       - name: npm install
         run: |
           npm install
-        env:
-          GITHUB_TOKEN: ''
 
       - name: Build SplashKit site
         run: npm run build
