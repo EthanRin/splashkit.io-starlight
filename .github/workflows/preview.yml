@@ -47,10 +47,8 @@ jobs:
           path: dist
 
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          # Provide the path to the built Astro site
-          path: ./astro-dist3
 
       - name: Leave PR Comment for Preview
         if: ${{ success() && github.event_name == 'pull_request_target' && github.event.action != 'closed' }}
