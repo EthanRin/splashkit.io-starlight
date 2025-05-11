@@ -55,8 +55,10 @@ import { nullable } from "astro:schema";
                                 isIframeReady = true;
                                 if (readinessTimeout) clearTimeout(readinessTimeout);
                                 while (messageQueue.length > 0) {
-                                const message = messageQueue.shift();
-                                globalIframe.contentWindow.postMessage(message, '*');
+                                    const message = messageQueue.shift();
+                                    if (globalIframe != null) {
+                                        globalIframe.contentWindow.postMessage(message, '*');
+                                    }
                                 }
                             }
                             });
